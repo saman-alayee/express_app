@@ -4,14 +4,20 @@ const Joi = require("joi");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const config = require("config");
+const logger = require('./logger') 
 const startupDebugger = require("debug")("app:startup");
 const dbDebugger = require("debug")("app:db");
 
+app.use(logger)
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("tiny"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+
+// Configuration 
+console.log('app name :'+ config.get('name'));
+console.log('mail server : ' + config.get('name'))
 
 if (app.get("env") === "development") {
   app.use(morgan("tiny"));
