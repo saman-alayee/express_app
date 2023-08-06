@@ -1,10 +1,10 @@
 const express = require("express");
 const app = express();
-const genres = require('./routes/genres')
 const mongoose = require("mongoose");
+const customers = require('./routes/customers')
 
 app.use(express.json());
-app.use('/api/genres',genres)
+app.use('/api/customers',customers)
 
 // connect to database
 mongoose
@@ -14,4 +14,5 @@ mongoose
 
 
 const port = process.env.PORT || 5000;
-app.listen(port, () => console.log("port:" + port));
+app.listen(port, () => 
+console.log(`Server is running on http://localhost:${port}`));
