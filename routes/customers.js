@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const Joi = require("joi");
+const auth = require("../middleware/auth")
 
 const Customer = mongoose.model(
   "Customer",
@@ -25,7 +26,7 @@ const Customer = mongoose.model(
   })
 );
 
-router.get("/", async (req, res) => {
+router.get("/",auth, async (req, res) => {
   const customers = await Customer.find().sort("name");
   res.send(customers);
 });
