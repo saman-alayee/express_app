@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 const customers = require("./routes/customers");
 const users = require("./routes/users");
 const auth = require("./routes/auth");
-const config = require("config");
 
 
 app.use(express.json());
