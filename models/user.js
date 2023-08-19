@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
     maxlength: 255,
     unique: true,
   },
+
   password: {
     type: String,
     required: true,
@@ -27,7 +28,7 @@ const userSchema = new mongoose.Schema({
   isAdmin: Boolean,
   roles: [],
   operations: [],
-});
+},{timestamps:true});
 userSchema.methods.generateAuthToken = function () {
   const token = jwt.sign({ _id: this._id }, config.get("jwtPrivateKey"));
   return token;

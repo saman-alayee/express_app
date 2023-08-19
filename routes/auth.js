@@ -19,8 +19,8 @@ router.post("/", async (req, res) => {
     user.password
   );
   if (!validatePassword) return res.status(400).send("wrong email or password");
-  const token = user.generateAuthToken();
-  res.send(token);
+  const accessToken = user.generateAuthToken(); // read from user in models and jwt is in models
+  res.send(accessToken);
 });
 
 function validate(req) {
