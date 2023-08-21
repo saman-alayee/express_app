@@ -1,8 +1,8 @@
 const Joi = require("joi");
 const mongoose = require("mongoose");
 
-const Product = mongoose.model(
-  "Product",
+const Cart = mongoose.model(
+  "Cart",
   new mongoose.Schema({
     name: {
       type: String,
@@ -38,28 +38,23 @@ const Product = mongoose.model(
       minlength: 5,
       maxlength: 2048,
     },
-    images: {
-      type: Array,
-      required: true,
+    createdBy: {
+      type: String,
     },
-    createdBy:{
-      type:String
-    }
   })
 );
-function validateProduct(product) {
+function validateCart(cart) {
   const schema = Joi.object({
     name: Joi.string().min(5).max(50).required(),
     category: Joi.string().min(5).max(50).required(),
     price: Joi.number().required(),
     description: Joi.string().min(5).max(1024).required(),
     shortDescription: Joi.string().min(5).max(1024).required(),
-    thumbnailImage: Joi.string().min(5).max(2048).required(), 
-    images: Joi.array().items(Joi.string()).required()
+    thumbnailImage: Joi.string().min(5).max(2048).required(),
   });
-  const result = schema.validate(product);
+  const result = schema.validate(cart);
   return result;
 }
 
-exports.Product = Product;
-exports.validate = validateProduct;
+exports.Cart = Cart;
+exports.validate = validateCart;
