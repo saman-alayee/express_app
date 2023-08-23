@@ -4,8 +4,8 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 
 // read products
-router.get("/", auth, async (req, res) => {
-  const products = await Product.find({ createdBy: req.userId }).sort("name");
+router.get("/", async (req, res) => {
+  const products = await Product.find().sort("name");
   res.send(products);
 });
 
