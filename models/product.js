@@ -1,5 +1,16 @@
 const Joi = require("joi");
 const mongoose = require("mongoose");
+const multer = require("multer"); // Add Multer
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // Specify the directory where uploaded files will be stored
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname); // Generate a unique filename for each uploaded file
+  },
+});
+const upload = multer({ storage: storage });
 
 const Product = mongoose.model(
   "Product",
@@ -42,9 +53,7 @@ const Product = mongoose.model(
       type: Array,
       required: true,
     },
-    createdBy:{
-      type:String
-    }
+   
   },  { timestamps: true })
 );
 function validateProduct(product) {
@@ -55,7 +64,7 @@ function validateProduct(product) {
     description: Joi.string().min(5).max(1024).required(),
     shortDescription: Joi.string().min(5).max(1024).required(),
     thumbnailImage: Joi.string().min(5).max(2048).required(), 
-    images: Joi.array().items(Joi.string()).required()
+
   });
   const result = schema.validate(product);
   return result;
@@ -63,3 +72,4 @@ function validateProduct(product) {
 
 exports.Product = Product;
 exports.validate = validateProduct;
+exports.upload = upload; // Export the Multer uploazd middleware
