@@ -14,12 +14,23 @@ function calculateTotalCost(cartItems) {
   return totalCost;
 }
 
-// read carts
-router.get("/", auth, async (req, res) => {
+// read all carts
+router.get("/all", auth, async (req, res) => {
   const carts = await Cart.find({ createdBy: req.userId }).sort("name");
   const totalCost = calculateTotalCost(carts);
 
   res.send({ carts, totalCost });
+});
+// read just user cart
+router.get("/", auth, async (req, res) => {
+  try {
+    const carts = await Cart.find({ createdBy: req.userId }).sort("name");
+    const totalCost = calculateTotalCost(carts);
+
+    res.send({ carts, totalCost });
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 // create cart

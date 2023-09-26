@@ -3,18 +3,31 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var nodemailer = require("nodemailer");
+// var nodemailer = require("nodemailer");
 var cors = require('cors')
-var config = require('config');
-
 
 var app = express();
-app.use(cors())
+app.use(cors());
+
+// Define a custom middleware function to log requests
+function logRequest(req, res, next) {
+  // Log the IP address
+  const ipAddress = req.ip || req.connection.remoteAddress;
+
+  console.log(`Request Method: ${req.method}${req.url}` + `---Request from IP: ${ipAddress}`);
+
+  // Continue processing the request
+  next();
+}
+
+// Add the custom middleware
+app.use(logRequest);
+
+// Your existing code follows...
 
 require('./startup/routes')(app);
 require('./startup/db')();
 
-// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -25,23 +38,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-
-
-// catch 404 and forward to error handler
+// Error handling middleware
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
   res.status(err.status || 500);
   res.render('error');
 });
 
- 
 module.exports = app;

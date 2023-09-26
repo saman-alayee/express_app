@@ -7,9 +7,13 @@ const storage = multer.diskStorage({
     cb(null, "uploads/"); // Specify the directory where uploaded files will be stored
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname); // Generate a unique filename for each uploaded file
+    const newIPAddress = "http://new-ip"; // Replace with your new IP address or domain
+    const filename = Date.now() + "-" + file.originalname;
+    const newImageUrl = `${newIPAddress}/uploads/${filename}`;
+    cb(null, filename); // Use the original filename
   },
 });
+
 const upload = multer({ storage: storage });
 
 const Product = mongoose.model(
